@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica', 'Arial', sans-serif;
+        }
+        .bbc-container {
+            align-items: center;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        header {
+            background: white;
+            border-bottom: 1px solid #DDDDDD;
+        }
+        .header-top {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        .nav-main {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            border-top: 1px solid #DDDDDD;
+            overflow-x: auto;
+            align-items: center;
+        }
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            white-space: nowrap;
+        }
+        .nav-item {
+            color: black;
+            font-weight: bold;
+            font-size: 0.875rem;
+            padding: 0.75rem 0;
+            border-bottom: 4px solid transparent;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .nav-item:hover {
+            color: #B80000;
+            border-bottom-color: #B80000;
+        }
+        .category-tag {
+            background: black;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 0.125rem 0.375rem;
+            text-transform: uppercase;
+        }
+        .top-stories {
+            padding: 1.5rem 0;
+        }
+        .section-heading {
+            font-size: 1rem;
+            font-weight: bold;
+            border-bottom: 1px solid #DDDDDD;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .stories-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+        }
+        .main-story img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+        }
+        .story-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+            color: black;
+            text-decoration: none;
+        }
+        .story-title:hover {
+            text-decoration: underline;
+        }
+        .story-desc {
+            font-size: 0.875rem;
+            color: #4A4A4A;
+            margin-bottom: 0.5rem;
+        }
+        .story-time {
+            font-size: 0.75rem;
+            color: #737373;
+        }
+        .secondary-stories {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .news-item {
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #DDDDDD;
+        }
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        .news-grid-section {
+            background: #F8F8F8;
+            padding: 1.5rem 0;
+        }
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        .news-card {
+            background: white;
+        }
+        .news-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+        .news-card-content {
+            padding: 0.75rem;
+        }
+        .most-read {
+            padding: 1.5rem 0;
+        }
+        .most-read-list {
+            list-style: none;
+        }
+        .most-read-item {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #DDDDDD;
+            display: flex;
+            align-items: flex-start;
+        }
+        .most-read-number {
+            color: #B80000;
+            font-weight: bold;
+            font-size: 1.25rem;
+            margin-right: 1rem;
+            min-width: 1.5rem;
+        }
+        footer {
+            background: #222222;
+            color: white;
+            padding: 2rem 0;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        .footer-heading {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .footer-links {
+            list-style: none;
+        }
+        .footer-link {
+            color: #CCCCCC;
+            text-decoration: none;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .footer-link:hover {
+            color: white;
+        }
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #444444;
+            font-size: 0.75rem;
+            color: #999999;
+        }
+        .live-updates {
+            background: #F1F0FB;
+            padding: 1.5rem 0;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        .live-updates-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #B80000;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        .live-text {
+            color: #B80000;
+            font-weight: bold;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+        }
+        .updates-container {
+            position: relative;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .update-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #DDDDDD;
+            position: relative;
+        }
+        .update-item:last-child {
+            border-bottom: none;
+        }
+        .update-time {
+            min-width: 5rem;
+            text-align: right;
+            color: #B80000;
+            font-weight: bold;
+            font-size: 0.875rem;
+        }
+        .update-content {
+            flex: 1;
+        }
+        .update-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 1.125rem;
+        }
+        .update-description {
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+            color: #333;
+            line-height: 1.4;
+        }
+        .update-media {
+            margin-top: 0.75rem;
+            border-radius: 0.375rem;
+            overflow: hidden;
+        }
+        .update-media img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+        }
+        .update-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+        .update-tag {
+            background: #E6E6E6;
+            color: #555;
+            padding: 0.25rem 0.5rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+        }
+        .update-reactions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.75rem;
+        }
+        .reaction-btn {
+            background: none;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            color: #555;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+        .reaction-btn:hover {
+            color: #B80000;
+        }
+        .new-label {
+            background: #B80000;
+            color: white;
+            font-size: 0.6875rem;
+            font-weight: bold;
+            padding: 0.125rem 0.375rem;
+            border-radius: 1rem;
+            margin-left: 0.5rem;
+            animation: fadeIn 2s;
+        }
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.6;
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .subscribe-btn {
+            background: #B80000;
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+            padding: 0.5rem 1rem;
+            font-weight: bold;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-left: auto;
+        }
+        .subscribe-btn:hover {
+            background: #930000;
+        }
+        .update-timeline {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 5rem;
+            width: 1px;
+            background: #DDDDDD;
+            z-index: 0;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -4px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #B80000;
+            top: 6px;
+        }
+        @media (max-width: 768px) {
+            .stories-grid {
+                grid-template-columns: 1fr;
+            }
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .update-time {
+                min-width: 3.5rem;
+                font-size: 0.75rem;
+            }
+            .update-timeline {
+                left: 3.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="bbc-container">
+            <div class="header-top">
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 1.5rem;">
+                    <img src="https://www.hatchwise.com/wp-content/uploads/2023/03/BBC-Logo-768x432-1.jpeg" style="height: 40px" />
+                </div>
+            </div>
+            <nav class="nav-main">
+                <div class="bbc-container">
+                    <ul class="nav-list">
+                        <li><a href="/" class="nav-item">Home</a></li>
+                        <li><a href="/news" class="nav-item">News</a></li>
+                        <li><a href="/sport" class="nav-item">Sport</a></li>
+                        <li><a href="/reel" class="nav-item">Reel</a></li>
+                        <li><a href="/worklife" class="nav-item">Worklife</a></li>
+                        <li><a href="/travel" class="nav-item">Travel</a></li>
+                        <li><a href="/future" class="nav-item">Future</a></li>
+                        <li><a href="/culture" class="nav-item">Culture</a></li>
+                        <li><a href="/more" class="nav-item">More</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <section class="top-stories">
+            <div class="bbc-container">
+                <h2 class="section-heading">Top Stories</h2>
+                <div class="stories-grid">
+                    <div class="main-story">
+                        <img src="https://www.politico.eu/cdn-cgi/image/width=1200,height=630,fit=crop,quality=80,onerror=redirect/wp-content/uploads/2023/12/28/GettyImages-1879706763-scaled.jpg" alt="Main news story">
+                        <span class="category-tag">World</span>
+                        <h3><a href="/news/world" class="story-title">Israel-Gaza war: Blinken says Palestinians must not be forcibly displaced</a></h3>
+                        <p class="story-desc">The US secretary of state says Israel must protect Gaza civilians as concerns grow about its push into Rafah.</p>
+                        <span class="story-time">3h</span>
+                    </div>
+                    <div class="secondary-stories">
+                        <div class="news-card">
+                            <img src="https://cdn.mos.cms.futurecdn.net/FvaLFvRKBdjWHpZ5kGGqUJ.jpg" alt="News item">
+                            <span class="category-tag">Business</span>
+                            <h3><a href="/news/business" class="story-title">Apple announces 'biggest-ever' change to iPhone</a></h3>
+                            <p class="story-desc">The tech giant will allow competing app stores on iPhones in the EU for the first time.</p>
+                            <span class="story-time">8h</span>
+                        </div>
+                        <div class="news-card">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsLJMVrj5KFxYu5sPpz950QuvaDwFe6QsxYw&s" alt="News item">
+                            <span class="category-tag">UK</span>
+                            <h3><a href="/news/uk" class="story-title">UK economy grew 0.6% in January, says ONS</a></h3>
+                            <p class="story-desc">The service sector helped drive growth after the economy slipped into recession at the end of 2023.</p>
+                            <span class="story-time">1h</span>
+                        </div>
+                        <div class="news-card">
+                            <img src="https://imageio.forbes.com/specials-images/imageserve/5f30ca3c42ff085eed768767/What-Is-The-Artificial-Intelligence-Revolution-And-Why-Does-It-Matter-To-Your/960x0.jpg?height=400&width=711&fit=bounds" alt="News item">
+                            <span class="category-tag">Technology</span>
+                            <h3><a href="/news/technology" class="story-title">AI revolution could benefit humanity, experts say</a></h3>
+                            <p class="story-desc">New study suggests artificial intelligence could solve major global challenges if developed responsibly.</p>
+                            <span class="story-time">3h</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="live-updates">
+            <div class="bbc-container">
+                <div class="live-updates-header">
+                    <div class="live-indicator">
+                        <span class="live-dot"></span>
+                        <span class="live-text">Live Updates</span>
+                    </div>
+                    <h2 class="section-heading" style="border: none; margin-bottom: 0; flex: 1;">Breaking News & Latest Updates</h2>
+                    <button class="subscribe-btn">Subscribe to Updates</button>
+                </div>
+                <div class="updates-container">
+                    <div class="update-timeline"></div>
+                    <div class="update-item">
+                        <div class="update-time">
+                            10:15
+                            <div class="timeline-dot"></div>
+                        </div>
+                        <div class="update-content">
+                            <h3 class="update-title">Global climate summit begins with ambitious agreements <span class="new-label">NEW</span></h3>
+                            <p class="update-description">World leaders gather to sign new agreements aimed at reducing carbon emissions by 50% by 2030, with major economies pledging significant financial support for developing nations.</p>
+                            <div class="update-media">
+                                <img src="https://images.unsplash.com/photo-1623932662727-b882c89e34cb?q=80&w=1000&auto=format&fit=crop" alt="Climate Summit">
+                            </div>
+                            <div class="update-tags">
+                                <span class="update-tag">Climate Crisis</span>
+                                <span class="update-tag">International</span>
+                                <span class="update-tag">Politics</span>
+                            </div>
+                            <div class="update-reactions">
+                                <button class="reaction-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                    128 Comments
+                                </button>
+                                <button class="reaction-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path>
+                                    </svg>
+                                    Read Analysis
+                                </button>
+                                <button class="reaction-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                        <polyline points="16 6 12 2 8 6"></polyline>
+                                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                                    </svg>
+                                    Share
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="update-item">
+                        <div class="update-time">
+                            09:48
+                            <div class="timeline-dot"></div>
+                        </div>
+                        <div class="update-content">
+                            <h3 class="update-title">Technology stocks surge after AI breakthrough announcement</h3>
+                            <p class="update-description">Major tech companies see significant stock price increases following announcements of new artificial intelligence capabilities that promise to revolutionize multiple industries.</p>
+                            <div class="update-tags">
+                                <span class="update-tag">Business</span>
+                                <span class="update-tag">Technology</span>
+                                <span class="update-tag">Markets</span>
+                            </div>
+                            <div class="update-reactions">
+                                <button class="reaction-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                    86 Comments
+                                </button>
+                                <button class="reaction-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path>
+                                    </svg>
+                                    Read Analysis
+                                </button>
+                                <button class="reaction-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                        <polyline points="16 6 12 2 8 6"></polyline>
+                                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                                    </svg>
+                                    Share
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="update-item">
+                        <div class="update-time">
+                            09:23
+                            <div class="timeline-dot"></div>
+                        </div>
+                        <div class="update-content">
+                            <h3 class="update-title">Breakthrough medical treatment receives emergency approval</h3>
+                            <p class="update-description">Health authorities have granted emergency approval for a revolutionary treatment for advanced cancer, following clinical trials showing unprecedented success rates in treating previously untreatable cases.</p>
+                            <div class="update-media">
+                                <img src="https://images.unsplash.com/photo-1631815588090-d4bba4a16c12?q=80&w=1000&auto=format&fit=crop" alt="Medical Research">
+                            </div>
+                            <div class="update-tags">
+                                <span class="update-tag">Health</span>
+                                <span class="update-tag">Science</span>
+                                <span class="update-tag">Research</span>
+                            </div>
+                            <div class="update-reactions">
+                                <button class="reaction-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                    144 Comments
+                                </button>
+                                <button class="reaction-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path>
+                                    </svg>
+                                    Read Analysis
+                                </button>
+                                <button class="reaction-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                        <polyline points="16 6 12 2 8 6"></polyline>
+                                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                                    </svg>
+                                    Share
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="update-item">
+                        <div class="update-time">
+                            08:45
+                            <div class="timeline-dot"></div>
+                        </div>
+                        <div class="update-content">
+                            <h3 class="update-title">Major sporting event faces potential disruption amid security concerns</h3>
+                            <p class="update-description">Organizers are meeting to discuss enhanced security measures following intelligence reports of potential threats, though officials insist the event will proceed as planned.</p>
+                            <div class="update-tags">
+                                <span class="update-tag">Sports</span>
+                                <span class="update-tag">Security</span>
+                                <span class="update-tag">International</span>
+                            </div>
+                            <div class="update-reactions">
+                                <button class="reaction-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                    79 Comments
+                                </button>
+                                <button class="reaction-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path>
+                                    </svg>
+                                    Read Analysis
+                                </button>
+                                <button class="reaction-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                        <polyline points="16 6 12 2 8 6"></polyline>
+                                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                                    </svg>
+                                    Share
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="news-grid-section">
+            <div class="bbc-container">
+                <h2 class="section-heading">News</h2>
+                <div class="news-grid">
+                    <div class="news-card">
+                        <img src="https://news.harvard.edu/wp-content/uploads/2023/02/Army.take3_.jpg" alt="News item">
+                        <div class="news-card-content">
+                            <span class="category-tag">Europe</span>
+                            <h3><a href="/news/1" class="story-title">Ukraine war: Belarus able to use nuclear weapons if attacked, says Putin</a></h3>
+                            <p class="story-desc">Putin says Russia has supplied Belarus with weapons that could be used against countries that attack it.</p>
+                            <span class="story-time">2h</span>
+                        </div>
+                    </div>
+                    <div class="news-card">
+                        <img src="https://cdn.mos.cms.futurecdn.net/cD8o8wDpzEeUMa2GwgZ5tX.jpg" alt="News item">
+                        <div class="news-card-content">
+                            <span class="category-tag">Science</span>
+                            <h3><a href="/news/2" class="story-title">Record-breaking cosmic explosion spotted by astronomers</a></h3>
+                            <p class="story-desc">The brightest ever gamma-ray burst has been detected by scientists, originating billions of light years away.</p>
+                            <span class="story-time">5h</span>
+                        </div>
+                    </div>
+                    <div class="news-card">
+                        <img src="https://www.oregoncancer.com/hubfs/Pros%20and%20Cons%20of%20Treating%20Cancer%20with%20Radiation%20Therapy%20%281%29.jpg" alt="News item">
+                        <div class="news-card-content">
+                            <span class="category-tag">Health</span>
+                            <h3><a href="/news/3" class="story-title">New cancer treatment breakthrough shows promising results</a></h3>
+                            <p class="story-desc">Researchers have developed a treatment that could revolutionize how we treat certain aggressive cancers.</p>
+                            <span class="story-time">6h</span>
+                        </div>
+                    </div>
+                    <div class="news-card">
+                        <img src="https://cdn.mos.cms.futurecdn.net/FPNQDJufMtwmnZcXxDA7vG.jpg" alt="News item">
+                        <div class="news-card-content">
+                            <span class="category-tag">Entertainment</span>
+                            <h3><a href="/news/4" class="story-title">Streaming services announce price increases amid industry changes</a></h3>
+                            <p class="story-desc">Major platforms set to raise subscription costs as competition in the streaming market intensifies.</p>
+                            <span class="story-time">4h</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="most-read">
+            <div class="bbc-container">
+                <h2 class="section-heading">Most Read</h2>
+                <ul class="most-read-list">
+                    <li class="most-read-item">
+                        <span class="most-read-number">1</span>
+                        <a href="/article/1" class="story-title">Apple announces 'biggest-ever' change to iPhone</a>
+                    </li>
+                    <li class="most-read-item">
+                        <span class="most-read-number">2</span>
+                        <a href="/article/2" class="story-title">Israel-Gaza war: Blinken says Palestinians must not be forcibly displaced</a>
+                    </li>
+                    <li class="most-read-item">
+                        <span class="most-read-number">3</span>
+                        <a href="/article/3" class="story-title">Ukraine war: Belarus able to use nuclear weapons if attacked, says Putin</a>
+                    </li>
+                    <li class="most-read-item">
+                        <span class="most-read-number">4</span>
+                        <a href="/article/4" class="story-title">UK economy grew 0.6% in January, says ONS</a>
+                    </li>
+                    <li class="most-read-item">
+                        <span class="most-read-number">5</span>
+                        <a href="/article/5" class="story-title">Record-breaking cosmic explosion spotted by astronomers</a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="bbc-container">
+            <svg viewBox="0 0 84 24" height="24" style="margin-bottom: 1.5rem;">
+                <path d="M84 0v24H72v-4.8h-1.2c-1.6 2.4-4.4 4.8-9.6 4.8-7.2 0-12-5.6-12-12s4.8-12 12-12c4 0 8 2.4 9.6 5.6V0H84zm-42 0h12v4.8h1.2c1.6-2.4 4.4-4.8 9.6-4.8 7.2 0 12 5.6 12 12s-4.8 12-12 12c-4 0-8-2.4-9.6-5.6v5.6H42V0zm-9.6 0H18v5.6c-1.6-3.2-5.6-5.6-9.6-5.6-7.2 0-12 5.6-12 12s4.8 12 12 12c5.2 0 8-2.4 9.6-4.8h1.2v4.8h13.2V0zM72 12c0 3.6-2.4 6-6 6s-6-2.4-6-6 2.4-6 6-6 6 2.4 6 6zm-30 0c0 3.6-2.4 6-6 6s-6-2.4-6-6 2.4-6 6-6 6 2.4 6 6zM12 6c3.6 0 6 2.4 6 6s-2.4 6-6 6-6-2.4-6-6 2.4-6 6-6z" fill="#FFFFFF"></path>
+            </svg>
+            <div class="footer-grid">
+                <div>
+                    <h3 class="footer-heading">News</h3>
+                    <ul class="footer-links">
+                        <li><a href="/news/world" class="footer-link">World</a></li>
+                        <li><a href="/news/uk" class="footer-link">UK</a></li>
+                        <li><a href="/news/business" class="footer-link">Business</a></li>
+                        <li><a href="/news/politics" class="footer-link">Politics</a></li>
+                        <li><a href="/news/tech" class="footer-link">Tech</a></li>
+                        <li><a href="/news/science" class="footer-link">Science</a></li>
+                        <li><a href="/news/health" class="footer-link">Health</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="footer-heading">Sport</h3>
+                    <ul class="footer-links">
+                        <li><a href="/sport/football" class="footer-link">Football</a></li>
+                        <li><a href="/sport/cricket" class="footer-link">Cricket</a></li>
+                        <li><a href="/sport/tennis" class="footer-link">Tennis</a></li>
+                        <li><a href="/sport/golf" class="footer-link">Golf</a></li>
+                        <li><a href="/sport/athletics" class="footer-link">Athletics</a></li>
+                        <li><a href="/sport/cycling" class="footer-link">Cycling</a></li>
+                        <li><a href="/sport/f1" class="footer-link">Formula 1</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="footer-heading">More</h3>
+                    <ul class="footer-links">
+                        <li><a href="/travel" class="footer-link">Travel</a></li>
+                        <li><a href="/future" class="footer-link">Future</a></li>
+                        <li><a href="/culture" class="footer-link">Culture</a></li>
+                        <li><a href="/music" class="footer-link">Music</a></li>
+                        <li><a href="/tv" class="footer-link">TV</a></li>
+                        <li><a href="/weather" class="footer-link">Weather</a></li>
+                        <li><a href="/sounds" class="footer-link">Sounds</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="footer-heading">About the BBC</h3>
+                    <ul class="footer-links">
+                        <li><a href="/about/contact-us" class="footer-link">Contact the BBC</a></li>
+                        <li><a href="/about/terms" class="footer-link">Terms of Use</a></li>
+                        <li><a href="/about/privacy" class="footer-link">Privacy Policy</a></li>
+                        <li><a href="/about/cookies" class="footer-link">Cookies</a></li>
+                        <li><a href="/about/accessibility" class="footer-link">Accessibility Help</a></li>
+                        <li><a href="/about/guidance" class="footer-link">Parental Guidance</a></li>
+                        <li><a href="/about/newsletters" class="footer-link">Newsletters</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>BBC © 2025. The BBC is not responsible for the content of external sites.</p>
+            </div>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const subscribeBtn = document.querySelector('.subscribe-btn');
+            if (subscribeBtn) {
+                subscribeBtn.addEventListener('click', function() {
+                    alert('Thank you for subscribing to live updates!');
+                });
+            }
+            setTimeout(() => {
+                addNewUpdate();
+            }, 15000);
+            const reactionBtns = document.querySelectorAll('.reaction-btn');
+            reactionBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.style.color = '#B80000';
+                    const btnText = this.textContent.trim();
+                    if (btnText.includes('Comments')) {
+                        alert('Comments section opened');
+                    } else if (btnText.includes('Analysis')) {
+                        alert('Opening detailed analysis...');
+                    } else if (btnText.includes('Share')) {
+                        alert('Share options opened');
+                    }
+                });
+            });
+        });
+        function addNewUpdate() {
+            const updatesContainer = document.querySelector('.updates-container');
+            if (!updatesContainer) return;
+            const newUpdate = document.createElement('div');
+            newUpdate.className = 'update-item';
+            newUpdate.innerHTML = `
+                <div class="update-time">
+                    10:32
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="update-content">
+                    <h3 class="update-title">Breaking: Major diplomatic breakthrough in trade negotiations <span class="new-label">NEW</span></h3>
+                    <p class="update-description">After months of tensions, negotiators have reached a preliminary agreement on tariffs that could resolve the ongoing trade dispute between major economic powers.</p>
+                    <div class="update-tags">
+                        <span class="update-tag">Economics</span>
+                        <span class="update-tag">Trade</span>
+                        <span class="update-tag">Diplomacy</span>
+                    </div>
+                    <div class="update-reactions">
+                        <button class="reaction-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            0 Comments
+                        </button>
+                        <button class="reaction-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path>
+                            </svg>
+                            Read Analysis
+                        </button>
+                        <button class="reaction-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                <polyline points="16 6 12 2 8 6"></polyline>
+                                <line x1="12" y1="2" x2="12" y2="15"></line>
+                            </svg>
+                            Share
+                        </button>
+                    </div>
+                </div>
+            `;
+            updatesContainer.insertBefore(newUpdate, updatesContainer.firstChild);
+            newUpdate.style.backgroundColor = '#FFFDE7';
+            setTimeout(() => {
+                newUpdate.style.backgroundColor = '';
+                newUpdate.style.transition = 'background-color 2s';
+            }, 100);
+            const newBtns = newUpdate.querySelectorAll('.reaction-btn');
+            newBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.style.color = '#B80000';
+                    const btnText = this.textContent.trim();
+                    if (btnText.includes('Comments')) {
+                        alert('Comments section opened');
+                    } else if (btnText.includes('Analysis')) {
+                        alert('Opening detailed analysis...');
+                    } else if (btnText.includes('Share')) {
+                        alert('Share options opened');
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>
